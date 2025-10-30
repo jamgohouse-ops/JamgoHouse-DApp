@@ -42,10 +42,13 @@ Permite **listar ofertas de mango**, **recibir pagos seguros con escrow**, y **l
 
 | Contrato | Dirección | Descripción |
 |-----------|------------|-------------|
-| ListingContract | `0x...` | Publicación de ofertas de mango |
-| OrderEscrow | `0x...` | Administración de pagos y fondos en escrow |
+| ListingContract | 0xd9145CCE52D386f254917e481eB44e9943F39138 | Publicación de ofertas de mango |
+| OrderEscrow | `0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8| Administración de pagos y fondos en escrow |
 
-🔗 **Ver en Snowtrace:** [https://testnet.snowtrace.io/](https://testnet.snowtrace.io/)
+
+🔗 **Ver en Snowtrace:** 
+https://subnets-test.avax.network/c-chain/tx/0x0f62f9b334fe0e01efa202b6676012362a630d3345465998ea97b8a97341f67c
+
 
 ---
 
