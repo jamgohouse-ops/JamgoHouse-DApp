@@ -55,6 +55,8 @@ https://testnet.snowtrace.io/address/0x4A05a392ec090dC33943b7B7a054A7b7EE1cd93B
 
 ## 🧪 Pruebas en Remix (Evidencia On-Chain)
 Ejecución completa en Avalanche Fuji Testnet.
+![Pruebas en Remix Jamgo House](docs/screenshots.pdf)
+
 
 ---
 
