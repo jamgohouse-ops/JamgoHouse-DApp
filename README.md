@@ -93,7 +93,8 @@ Copiar código
 
 ## 📱 Prototipo Visual (PDF)
 ✨ **Interfaz de Usuario – Flujo del Consumidor y Productor**  
-👉 [Abrir PDF del Prototipo](docs/Interfaz.png)
+👉 [Abrir PDF del Prototipo](docs/Diseño%20Visual%20%20UX%20(Prototipo).pdf)
+docs/Interfaz.png
 
 
 > El prototipo muestra cómo los usuarios publican ofertas y visualizan la trazabilidad de cada mango.
