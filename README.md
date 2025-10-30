@@ -91,6 +91,14 @@ yaml
 Copiar código
 ✅ Fondos liberados al productor.  
 
+## 📱 Prototipo Visual (PDF)
+✨ **Interfaz de Usuario – Flujo del Consumidor y Productor**  
+👉 [Abrir PDF del Prototipo](docs)
+
+> El prototipo muestra cómo los usuarios publican ofertas y visualizan la trazabilidad de cada mango.
+
+---
+
 ---
 
 ## 📄 Documentación y recursos
