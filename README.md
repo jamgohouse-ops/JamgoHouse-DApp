@@ -1,6 +1,8 @@
 # JamgoHouse-DApp
 DApp de trazabilidad y escrow en Avalanche para comercio justo de mango
 
-#Whitepaper
+# Whitepaper
 https://github.com/jamgohouse-ops/JamgoHouse-DApp/blob/main/docs/whitepaper%20jamgo%20house.pdf
-
+# Arquitectura del Sistema
+docs/architecture_diagram.png.png
+# Flujo de Pago con Escrow
