@@ -14,7 +14,7 @@ Permite **listar ofertas de mango**, **recibir pagos seguros con escrow**, y **l
 ---
 
 ## 🧱 Arquitectura del Sistema
-![Arquitectura Jamgo House](docs/architecture_diagram.png)
+![Arquitectura Jamgo House](docs/architecture_diagram.png.png)
 
 **Niveles principales:**
 1. **Usuarios (Capa superior):** Productores, Consumidores y el Equipo Jamgo.  
