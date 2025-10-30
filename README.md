@@ -49,6 +49,12 @@ Permite **listar ofertas de mango**, **recibir pagos seguros con escrow**, y **l
 🔗 **Ver en Snowtrace:** 
 https://subnets-test.avax.network/c-chain/tx/0x0f62f9b334fe0e01efa202b6676012362a630d3345465998ea97b8a97341f67c
 
+## Billetera con transacciones (Fuji Testnet)
+0x4A05a392ec090dC33943b7B7a054A7b7EE1cd93B
+https://testnet.snowtrace.io/address/0x4A05a392ec090dC33943b7B7a054A7b7EE1cd93B
+
+## 🧪 Pruebas en Remix (Evidencia On-Chain)
+Ejecución completa en Avalanche Fuji Testnet.
 
 ---
 
