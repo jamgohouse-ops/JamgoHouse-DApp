@@ -40,14 +40,44 @@ Permite **listar ofertas de mango**, **recibir pagos seguros con escrow**, y **l
 
 ## ⚙️ Contratos en Fuji Testnet
 
-| Contrato | Dirección | Descripción |
-|-----------|------------|-------------|
-| ListingContract | 0xd9145CCE52D386f254917e481eB44e9943F39138 | Publicación de ofertas de mango |
-| OrderEscrow | `0xd8b934580fcE35a11B58C6D73aDeE468a2833fa8| Administración de pagos y fondos en escrow |
+| Contrato        | Dirección (Fuji) |
+|-----------------|------------------|
+| ListingContract | `0xd6dd2170C10E89cB996C1a5004bF7e64fb9716E1` |
+| OrderEscrow     | `0xD7A951e140d1E72e02c20477616FA1Ff28F9b920` |
 
+**Enlaces en Snowtrace (Fuji)**  
+- createListing (ejecución): https://testnet.snowtrace.io/tx/0x122cbbdb664e458ff08b02b8c5133bcd41b2bce1055c60cc9825f85f2810f7af  
+- payOrder (ejecución): https://testnet.snowtrace.io/tx/0x12da9f389c2a08f37b167531fdf16e28f17df5f9fbd596c28cfec7826c8f6368
 
-🔗 **Ver en Snowtrace:** 
-https://subnets-test.avax.network/c-chain/tx/0x0f62f9b334fe0e01efa202b6676012362a630d3345465998ea97b8a97341f67c
+---
+
+## 🧪 Cómo probarlo (Remix + MetaMask/Core Wallet)
+1. Conecta tu wallet a **Avalanche Fuji Testnet** (RPC: `https://api.avax-test.network/ext/bc/C/rpc`).  
+2. En Remix, selecciona **Injected Provider - Core** y asegúrate de que la cuenta sea la que utilizarás para operar.
+
+### Opciones:
+- **A. Usar los contratos ya desplegados (recomendado):**
+  1. Copia la dirección del contrato en Remix (`At Address`) y conéctala:
+     - `ListingContract` → `0xd6dd2170C10E89cB996C1a5004bF7e64fb9716E1`
+     - `OrderEscrow` → `0xD7A951e140d1E72e02c20477616FA1Ff28F9b920`
+  2. En `ListingContract` ejecuta:
+     ```text
+     createListing("Mango Manzano", 1000000000000000, 10, "ipfs://demo")
+     ```
+     (Value = 0)
+     - Verifica la tx: https://testnet.snowtrace.io/tx/0x122cbbdb664e458ff08b02b8c5133bcd41b2bce1055c60cc9825f85f2810f7af
+  3. En `OrderEscrow` ejecuta:
+     ```text
+     payOrder(<DIRECCION_PRODUCTOR>, 0, 1)
+     ```
+     **Value (wei):** `1000000000000000` (0.001 AVAX)  
+     - Verifica la tx: https://testnet.snowtrace.io/tx/0x12da9f389c2a08f37b167531fdf16e28f17df5f9fbd596c28cfec7826c8f6368
+  4. Finalmente, con la cuenta que pagó, ejecuta:
+     ```text
+     release(0)
+     ```
+
+---
 
 ## Billetera con transacciones (Fuji Testnet)
 0x4A05a392ec090dC33943b7B7a054A7b7EE1cd93B
@@ -58,38 +88,7 @@ Ejecución completa en Avalanche Fuji Testnet.
 ![Pruebas en Remix Jamgo House](docs/screenshots.pdf)
 ![Prototipo Visual](docs/prueba%20remix.png)
 
----
-
-## 🧪 Cómo probarlo (Remix + Core Wallet / MetaMask)
-
-1️⃣ Conéctate a **Avalanche Fuji Testnet**.  
-   - RPC: `https://api.avax-test.network/ext/bc/C/rpc`  
-   - Faucet: [https://faucet.avax.network](https://faucet.avax.network)
-
-2️⃣ En Remix:  
-   - Compila `ListingContract.sol` y **Deploy**.  
-   - Copia la dirección del contrato desplegado.  
-   - Compila `OrderEscrow.sol` → **Deploy**, pegando esa dirección en el constructor.  
-
-3️⃣ En `ListingContract` ejecuta:
-createListing("Mango Manzano", 1000000000000000, 10, "ipfs://demo")
-
-go
-Copiar código
-
-4️⃣ En `OrderEscrow` ejecuta:
-payOrder(1, 1)
-
-markdown
-Copiar código
-➡ En el campo **Value**, pon `1000000000000000` (0.001 AVAX)
-
-5️⃣ Luego ejecuta:
-release(1)
-
-yaml
-Copiar código
-✅ Fondos liberados al productor.  
+--- 
 
 ## 📱 Prototipo Visual (PDF)
 ✨ **Interfaz de Usuario – Flujo del Consumidor y Productor**  
@@ -98,8 +97,6 @@ Copiar código
 
 
 > El prototipo muestra cómo los usuarios publican ofertas y visualizan la trazabilidad de cada mango.
-
----
 
 ---
 
