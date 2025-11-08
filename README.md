@@ -1,7 +1,9 @@
 # 🥭 Jamgo House: Donde Cada Mango Cuenta  
 **Trazabilidad y Comercio Justo sobre Avalanche Blockchain**  
 Hackathon Avalanche Build – Categoría: Impacto Social & Comunidad  
-
+---
+🎬 Demo Pitch
+https://github.com/jamgohouse-ops/JamgoHouse-DApp/releases/tag/v1.0-hackathon
 ---
 
 ## 🚀 Descripción
