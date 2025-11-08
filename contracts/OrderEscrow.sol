@@ -1,18 +1,15 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.26;
 
-interface IListing {
-    function listings(uint256) external view returns (
-        address producer,
-        string memory variety,
-        uint256 priceWeiPerKg,
-        uint256 stockKg,
-        string memory ipfsHash,
-        bool active
-    );
+import "@openzeppelin/contracts/utils/Strings.sol";
+
+interface ITraceMangoNFT {
+    function mintFromEscrow(address to, string calldata tokenURI) external returns (uint256);
 }
 
 contract OrderEscrow {
+    using Strings for uint256;
+
     struct Order {
         address buyer;
         address producer;
@@ -23,59 +20,78 @@ contract OrderEscrow {
         bool released;
     }
 
-    IListing public listing;
-    uint256 public nextOrderId;
     mapping(uint256 => Order) public orders;
+    uint256 public nextOrderId;
 
-    event OrderPaid(uint256 indexed orderId, address indexed buyer, uint256 listingId, uint256 kg, uint256 amountWei);
+    address public owner;
+    modifier onlyOwner() { require(msg.sender == owner, "Not owner"); _; }
+
+    ITraceMangoNFT public traceNFT;
+    string public baseURI;
+
+    event OrderPaid(uint256 indexed orderId, address indexed buyer, uint256 amountWei);
     event FundsReleased(uint256 indexed orderId, address indexed producer, uint256 amountWei);
     event Refunded(uint256 indexed orderId, address indexed buyer, uint256 amountWei);
+    event NFTMinted(uint256 indexed orderId, address indexed to, uint256 tokenId, string tokenURI);
 
-    constructor(address listingAddress) {
-        listing = IListing(listingAddress);
+    // ✅ SOLO baseURI en el constructor
+    constructor(string memory _baseURI) {
+        owner = msg.sender;
+        baseURI = _baseURI;
     }
 
-    function payOrder(uint256 listingId, uint256 kg) external payable returns (uint256 orderId) {
-        (address producer,, uint256 priceWeiPerKg, uint256 stockKg,, bool active) = listing.listings(listingId);
-        require(active, "Listing inactive");
-        require(kg > 0 && kg <= stockKg, "Invalid kg");
+    function setNFTContract(address _nft) external onlyOwner {
+        traceNFT = ITraceMangoNFT(_nft);
+    }
 
-        uint256 total = priceWeiPerKg * kg;
-        require(msg.value == total, "Wrong amount");
+    function payOrder(address producer, uint256 listingId, uint256 kg) external payable {
+        require(producer != address(0), "Productor invalido");
+        require(kg > 0, "Cantidad invalida");
+        require(msg.value > 0, "Monto invalido");
 
-        orderId = ++nextOrderId;
-        orders[orderId] = Order({
+        orders[nextOrderId] = Order({
             buyer: msg.sender,
             producer: producer,
             listingId: listingId,
             kg: kg,
-            amountWei: total,
+            amountWei: msg.value,
             paid: true,
             released: false
         });
 
-        emit OrderPaid(orderId, msg.sender, listingId, kg, total);
+        emit OrderPaid(nextOrderId, msg.sender, msg.value);
+        nextOrderId++;
     }
 
-    // Buyer confirma entrega -> libera fondos al productor
     function release(uint256 orderId) external {
-        Order storage o = orders[orderId];
-        require(o.paid && !o.released, "Invalid state");
-        require(msg.sender == o.buyer, "Only buyer confirms");
-        o.released = true;
-        (bool ok, ) = o.producer.call{value: o.amountWei}("");
-        require(ok, "Transfer failed");
-        emit FundsReleased(orderId, o.producer, o.amountWei);
+        Order storage order = orders[orderId];
+        require(order.paid, "Pago no realizado");
+        require(!order.released, "Fondos ya liberados");
+        require(order.buyer == msg.sender, "Solo el comprador puede liberar");
+
+        order.released = true;
+        payable(order.producer).transfer(order.amountWei);
+        emit FundsReleased(orderId, order.producer, order.amountWei);
+
+        if (address(traceNFT) != address(0)) {
+            string memory tokenURI = string(abi.encodePacked(baseURI, orderId.toString(), ".json"));
+            uint256 tokenId = traceNFT.mintFromEscrow(order.buyer, tokenURI);
+            emit NFTMinted(orderId, order.buyer, tokenId, tokenURI);
+        }
     }
 
-    // Productor decide reembolsar
     function refund(uint256 orderId) external {
-        Order storage o = orders[orderId];
-        require(o.paid && !o.released, "Invalid state");
-        require(msg.sender == o.producer, "Only producer can refund");
-        o.released = true;
-        (bool ok, ) = o.buyer.call{value: o.amountWei}("");
-        require(ok, "Refund failed");
-        emit Refunded(orderId, o.buyer, o.amountWei);
+        Order storage order = orders[orderId];
+        require(order.paid, "Pedido no pagado");
+        require(!order.released, "Ya liberado");
+        require(order.producer == msg.sender, "Solo productor puede reembolsar");
+
+        uint256 amount = order.amountWei;
+        order.amountWei = 0;
+        order.released = true;
+        payable(order.buyer).transfer(amount);
+
+        emit Refunded(orderId, order.buyer, amount);
     }
 }
+
